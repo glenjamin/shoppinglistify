@@ -1,3 +1,5 @@
+var fmt = require("util").format;
+
 /* eslint-disable no-process-env */
 exports.getenv = function(name) {
   if (process.env[name]) {
@@ -7,9 +9,8 @@ exports.getenv = function(name) {
 };
 /* eslint-enable no-process-env */
 
-exports.tidyhost = function(addr) {
-  if (addr == "0.0.0.0" || addr == "::") {
-    return "localhost";
-  }
-  return addr;
+exports.addr2url = function(addr) {
+  var {address, port} = addr;
+  var host = (address == "0.0.0.0" || address == "::") ? "localhost" : address;
+  return fmt("http://%s:%d", host, port);
 };

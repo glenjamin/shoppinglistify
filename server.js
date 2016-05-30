@@ -3,7 +3,10 @@ var express = require("express");
 var redis = require("redis");
 var uuid = require("uuid");
 
-var { tidyhost, getenv } = require("./details");
+var bunyan = require("bunyan");
+var log = bunyan.createLogger({ name: "shoppinglistify" });
+
+var {addr2url, getenv} = require("./details");
 
 var config = {
   port: getenv("PORT"),
@@ -11,6 +14,9 @@ var config = {
 };
 
 var client = redis.createClient(config.redis);
+client.on("ready", function() {
+  log.info("Connected to redis", {url: config.redis});
+});
 
 var app = express();
 
@@ -22,6 +28,7 @@ app.use(function(req, res) {
 var server = http.createServer(app);
 server.listen(config.port, function() {
   var addr = server.address();
-  console.log("Listening on http://%s:%d", tidyhost(addr.address), addr.port);
+  var url = addr2url(addr);
+  log.info({url: url, port: addr.port}, "Listening");
 });
 
