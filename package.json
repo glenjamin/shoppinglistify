@@ -1,0 +1,33 @@
+{
+  "name": "shoppinglistify",
+  "version": "1.0.0",
+  "description": "12 Factor demo",
+  "scripts": {
+    "start": "node server.js",
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": "6.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glenjamin/shoppinglistify.git"
+  },
+  "author": "Glen Mailer <glen@stainlessed.co.uk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glenjamin/shoppinglistify/issues"
+  },
+  "homepage": "https://github.com/glenjamin/shoppinglistify#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "bunyan": "^1.8.1",
+    "express": "^4.13.4",
+    "redis": "^2.6.0-2",
+    "uuid": "^2.0.2"
+  },
+  "devDependencies": {
+    "@glenjamin/eslint-config": "^2.1.0",
+    "eslint": "^2.8.0"
+  }
+}

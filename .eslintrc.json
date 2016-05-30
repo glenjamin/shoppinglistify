@@ -1,0 +1,12 @@
+{
+    "extends": "@glenjamin",
+    "env": {
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "rules": {
+        "no-magic-numbers": "off"
+    }
+}
