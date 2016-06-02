@@ -19,16 +19,24 @@ client.on("ready", function() {
   log.info("Connected to redis", {url: config.redis});
 });
 
-var db = {};
-
 var app = express();
 
 app.use(bunyanMiddleware({logger: log}));
 app.use(bodyParser.json());
 
+app.use(function(req, res, next) {
+  res.on("finish", function() {
+    if (req.list) {
+      client.set(req.list.id, JSON.stringify(req.list));
+    }
+  });
+
+  next();
+});
+
 app.post("/list", function(req, res) {
   var listId = uuid.v4();
-  db[listId] = {
+  req.list = {
     id: listId,
     name: String(req.body.name),
     items: {}
@@ -37,12 +45,20 @@ app.post("/list", function(req, res) {
 });
 
 app.param(":listId", function(req, res, next, listId) {
-  var list = db[listId];
-  if (!list) {
-    return res.status(404).json({ error: "list-not-found" });
-  }
-  req.list = list;
-  return next();
+  client.get(listId, function(err, reply) {
+    if (err) {
+      return next(err);
+    }
+    if (!reply) {
+      return res.status(404).json({ error: "list-not-found" });
+    }
+    try {
+      req.list = JSON.parse(reply);
+    } catch (ex) {
+      return next(ex);
+    }
+    return next();
+  });
 });
 
 app.get("/list/:listId", function(req, res) {
