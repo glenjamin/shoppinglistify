@@ -25,6 +25,7 @@
     "bunyan": "^1.8.1",
     "bunyan-middleware": "^0.3.1",
     "express": "^4.13.4",
+    "http-shutdown": "^1.0.3",
     "redis": "^2.6.0-2",
     "uuid": "^2.0.2"
   },
