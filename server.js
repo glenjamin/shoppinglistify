@@ -7,7 +7,7 @@ var createApp = require("./app");
 
 var config = {
   port: getenv("PORT"),
-  redis: getenv("REDIS")
+  redis: getenv("REDIS_URL")
 };
 
 var log = initLogging();
