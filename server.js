@@ -13,8 +13,9 @@ var config = {
 var log = initLogging();
 
 var redisClient = redis.createClient(config.redis);
+log.info("Connecting to redis", {url: config.redis});
 redisClient.on("ready", function() {
-  log.info("Connected to redis", {url: config.redis});
+  log.info("Connected to redis");
 });
 
 var app = createApp(log, redisClient);
