@@ -1,17 +1,18 @@
 var http = require("http");
 var express = require("express");
+var bodyParser = require("body-parser");
 var redis = require("redis");
 var uuid = require("uuid");
+var bunyanMiddleware = require("bunyan-middleware");
 
-var bunyan = require("bunyan");
-var log = bunyan.createLogger({ name: "shoppinglistify" });
-
-var {addr2url, getenv} = require("./details");
+var {addr2url, getenv, initLogging} = require("./details");
 
 var config = {
   port: getenv("PORT"),
   redis: getenv("REDIS")
 };
+
+var log = initLogging();
 
 var client = redis.createClient(config.redis);
 client.on("ready", function() {
@@ -20,6 +21,7 @@ client.on("ready", function() {
 
 var app = express();
 
+app.use(bunyanMiddleware({logger: log}));
 app.use(function(req, res) {
   res.status(404).json({ error: "not-found" });
 });
