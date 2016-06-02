@@ -30,7 +30,7 @@ app.post("/list", function(req, res) {
   var listId = uuid.v4();
   db[listId] = {
     id: listId,
-    name: req.body.name,
+    name: String(req.body.name),
     items: {}
   };
   res.redirect("/list/" + listId);
@@ -53,10 +53,24 @@ app.post("/list/:listId/item", function(req, res) {
   var id = uuid.v4();
   var item = {
     id: id,
-    name: req.body.name,
+    name: String(req.body.name),
     completed: false
   };
   req.list.items[id] = item;
+  res.redirect("/list/" + req.list.id);
+});
+
+app.param(":itemId", function(req, res, next, itemId) {
+  var item = req.list && req.list.items[itemId];
+  if (!item) {
+    return res.status(404).json({ error: "item-not-found" });
+  }
+  req.item = item;
+  return next();
+});
+
+app.post("/list/:listId/item/:itemId/toggle", function(req, res) {
+  req.item.completed = !req.item.completed;
   res.redirect("/list/" + req.list.id);
 });
 
