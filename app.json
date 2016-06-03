@@ -1,0 +1,14 @@
+{
+  "name": "shoppinglistify",
+  "description": "12 Factor demo",
+  "success_url": "/",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": [
+    "heroku-redis:hobb-dev"
+  ]
+}
