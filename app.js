@@ -12,6 +12,7 @@ module.exports = function(log, redis) {
   app.use(function(req, res, next) {
     res.on("finish", function() {
       if (req.list) {
+        req.list.mtime = new Date().toISOString();
         redis.set(req.list.id, JSON.stringify(req.list));
       }
     });
@@ -41,7 +42,8 @@ module.exports = function(log, redis) {
     req.list = {
       id: listId,
       name: String(req.body.name),
-      items: {}
+      items: {},
+      ctime: new Date().toISOString()
     };
     res.redirect("/list/" + listId);
   });
