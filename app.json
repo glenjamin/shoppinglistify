@@ -9,6 +9,6 @@
     }
   },
   "addons": [
-    "heroku-redis:hobb-dev"
+    "heroku-redis:hobby-dev"
   ]
 }
