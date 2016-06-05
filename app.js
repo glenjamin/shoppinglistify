@@ -3,12 +3,14 @@ var uuid = require("uuid");
 var bunyanMiddleware = require("bunyan-middleware");
 var express = require("express");
 var bodyParser = require("body-parser");
+var cors = require('cors');
 
 module.exports = function(log, redis) {
   var app = express();
 
   app.use(bunyanMiddleware({logger: log, requestStart: true}));
   app.use(bodyParser.json());
+  app.use(cors());
 
   app.use(function(req, res, next) {
     res.on("finish", function() {
