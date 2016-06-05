@@ -29,7 +29,7 @@ server.listen(config.port, function() {
 });
 
 var SHUTDOWN_WAIT = 5000;
-process.on("SIGINT", function() {
+function cleanShutdown() {
   log.warn("Shutting down due to SIGINT");
 
   redisClient.unref();
@@ -41,4 +41,6 @@ process.on("SIGINT", function() {
     log.warn("Did not shutdown cleanly after %dms", SHUTDOWN_WAIT);
     process.exit(1);
   }, SHUTDOWN_WAIT).unref();
-});
+}
+process.on("SIGINT", cleanShutdown);
+process.on("SIGTERM", cleanShutdown);
