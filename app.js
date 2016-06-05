@@ -57,7 +57,7 @@ module.exports = function(log, redis) {
       items: {},
       ctime: new Date().toISOString()
     };
-    res.redirect("/list/" + listId);
+    res.json(req.list);
   });
 
   app.get("/list/:listId", function(req, res) {
@@ -71,7 +71,7 @@ module.exports = function(log, redis) {
       completed: false
     };
     req.list.items[id] = item;
-    res.redirect("/list/" + req.list.id);
+    res.json(req.list);
   });
 
   app.param("itemId", function(req, res, next, itemId) {
@@ -85,7 +85,7 @@ module.exports = function(log, redis) {
 
   app.post("/list/:listId/item/:itemId/toggle", function(req, res) {
     req.item.completed = !req.item.completed;
-    res.redirect("/list/" + req.list.id);
+    res.json(req.list);
   });
 
   app.use(function(req, res) {
