@@ -10,7 +10,9 @@ module.exports = function(log, redis) {
 
   app.use(bunyanMiddleware({logger: log, requestStart: true}));
   app.use(bodyParser.json());
+
   app.use(cors());
+  app.options('*', cors());
 
   app.use(function(req, res, next) {
     res.on("finish", function() {
