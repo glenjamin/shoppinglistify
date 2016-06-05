@@ -1,3 +1,4 @@
+var path = require("path");
 var uuid = require("uuid");
 var bunyanMiddleware = require("bunyan-middleware");
 var express = require("express");
@@ -18,6 +19,13 @@ module.exports = function(log, redis) {
     });
 
     next();
+  });
+
+  app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "/client.html"));
+  });
+  app.get("/client.js", function(req, res) {
+    res.sendFile(path.join(__dirname, "/client.js"));
   });
 
   app.param("listId", function(req, res, next, listId) {
@@ -55,7 +63,6 @@ module.exports = function(log, redis) {
   app.post("/list/:listId/item", function(req, res) {
     var id = uuid.v4();
     var item = {
-      id: id,
       name: String(req.body.name),
       completed: false
     };
