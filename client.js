@@ -5,8 +5,8 @@
 
   var data = {
     url: "http://localhost:5000",
-    listId: null,
-    itemId: null,
+    listId: "<none>",
+    itemId: "<none>",
   };
 
   const merge = (a, b) => Object.assign({}, a, b);
