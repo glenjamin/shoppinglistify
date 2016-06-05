@@ -110,17 +110,21 @@
           $("div", {className: "col-xs-10"},
             $("h4", {className: "mono"}, `${method} ${path}`),
             $("ul", {},
-              Object.keys(params || {}).map(p => (
-                $("li", {}, $("code", {}, p), " ", $("span", {}, params[p]))
+              Object.keys(params || {}).map(p => $("li", { key: p },
+                $("code", {}, p), " ", $("span", {}, params[p])
               ))
             ),
             body && $(Json, {json: body})
           ),
-          $("div", {className: "col-xs-2"},
+          $("div", {className: "col-xs-2 text-center"},
             $("button", {
-              className: "btn btn-lg btn-success",
+              className: "btn btn-lg btn-primary btn-block",
               onClick: () => this.makeRequest()
-            }, "Go")
+            }, "Go"),
+            $("button", {
+              className: "btn btn-default btn-block",
+              onClick: () => this.setState({response: null})
+            }, "Clear")
           )
         ),
         $("h4", {}, "Response"),
