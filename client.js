@@ -5,6 +5,7 @@
 
   var data = {
     url: "http://localhost:5000",
+    email: "glenjamin@gmail.com",
     listId: "<none>",
     itemId: "<none>",
   };
@@ -16,9 +17,9 @@
     render();
   };
 
-  function App({url, listId, itemId}) {
+  function App({url, email, listId, itemId}) {
     return $("div", {},
-      $(Header, {url, listId, itemId}),
+      $(Header, {url, email, listId, itemId}),
       $(Example, {
         title: "Create a new list",
         method: "POST",
@@ -49,6 +50,14 @@
         path: "/list/:listId/item/:itemId/toggle",
         url: url,
         params: {listId, itemId}
+      }),
+      $(Example, {
+        title: "Email list",
+        method: "POST",
+        path: "/list/:listId/email",
+        url: url,
+        params: {listId},
+        body: {to: email}
       })
     );
   }
@@ -57,7 +66,8 @@
     return $("div", {className: "page-header"},
       $("h1", {}, "Shoppinglistify Client"),
       $("div", {className: "row"},
-        $(Field, {label: "API URL", name: "url", values: props})
+        $(Field, {label: "API URL", name: "url", values: props}),
+        $(Field, {name: "email", values: props})
       ),
       $("div", {className: "row"},
         $(Field, {name: "listId", values: props}),

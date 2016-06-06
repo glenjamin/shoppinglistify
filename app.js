@@ -3,9 +3,10 @@ var uuid = require("uuid");
 var bunyanMiddleware = require("bunyan-middleware");
 var express = require("express");
 var bodyParser = require("body-parser");
-var cors = require('cors');
+var cors = require("cors");
+var h = require("escape-html");
 
-module.exports = function(log, redis) {
+module.exports = function(log, redis, email) {
   var app = express();
 
   app.use(bunyanMiddleware({logger: log, requestStart: true}));
@@ -88,6 +89,22 @@ module.exports = function(log, redis) {
     res.json(req.list);
   });
 
+  app.post("/list/:listId/email", function(req, res, next) {
+    var to = req.body.to;
+    email.sendMail({
+      to: to,
+      subject: "Shoppinglistify: " + req.list.name,
+      text: formatText(req.list),
+      html: formatHtml(req.list)
+    }, function(err, info) {
+      if (err) return next(err);
+      return res.json({
+        result: "email-send",
+        info: info.response
+      });
+    });
+  });
+
   app.use(function(req, res) {
     res.status(404).json({ error: "not-found" });
   });
@@ -98,3 +115,27 @@ module.exports = function(log, redis) {
 
   return app;
 };
+
+function formatText(list) {
+  return (
+    "Shoppinglistify: " + list.name + "\n\n" +
+    map(list.items, function(item) {
+      return "  " + (item.completed ? "☑︎ " : "☐ ") + item.name;
+    }).join("\n")
+  );
+}
+
+function formatHtml(list) {
+  return (
+    "<h1>Shoppinglistify: " + h(list.name) + "</h1>" +
+    "<ul>" +
+    map(list.items, function(item) {
+      return "<li>" + (item.completed ? "☑︎ " : "☐ ") + h(item.name) + "</li>";
+    }).join("\n") +
+    "</ul>"
+  );
+}
+
+function map(obj, fn) {
+  return Object.keys(obj).map(k => fn(obj[k]));
+}
