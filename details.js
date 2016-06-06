@@ -25,8 +25,10 @@ exports.initLogging = function() {
   return bunyan.createLogger({
     name: "bl_frontend",
     serializers: {
-      req: ({method, originalUrl, ip}) => ({method, ip, url: originalUrl}),
-      res: ({statusCode}) => ({statusCode})
+      req: ({method, originalUrl, ip}) =>
+        ({method, ip, url: originalUrl}),
+      res: ({statusCode, req: {originalUrl}}) =>
+        ({statusCode, url: originalUrl})
     }
   });
 };
