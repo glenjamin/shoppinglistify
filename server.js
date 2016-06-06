@@ -25,7 +25,7 @@ var log = initLogging();
 
 // Create redis connection
 var redisClient = redis.createClient(config.redis);
-log.info("Connecting to redis", {url: config.redis});
+log.info({url: config.redis}, "Connecting to redis");
 redisClient.on("ready", function() {
   log.info("Connected to redis");
 });
@@ -35,7 +35,7 @@ var emailClient = nodemailer.createTransport(
   Object.assign({logger: log}, config.smtp),
   {from: '"Shoppinglistify" <shoppinglistify@stainlessed.co.uk>'}
 );
-log.info("Connecting to SMTP", {smtp: config.smtp});
+log.info({smtp: config.smtp}, "Connecting to SMTP");
 emailClient.verify(function(err, success) {
   if (err) throw err;
   log.info("Connected to SMTP", {success});
