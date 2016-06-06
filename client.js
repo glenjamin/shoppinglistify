@@ -1,10 +1,10 @@
 /* eslint-disable no-use-before-define */
-/* global React ReactDOM fetch document */
+/* global React ReactDOM fetch document location */
 (function() {
   var $ = React.createElement;
 
   var data = {
-    url: "http://localhost:5000",
+    url: location.protocol + "//" + location.host,
     email: "glenjamin@gmail.com",
     listId: "<none>",
     itemId: "<none>",
