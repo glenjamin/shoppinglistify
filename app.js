@@ -107,6 +107,15 @@ function setupRoutes(app, log, redis, email) {
     res.json(req.list);
   });
 
+  app.get("/list/:listId/email", function(req, res) {
+    res.send(emailPage({
+      to: "someone@example.com",
+      subject: "Shoppinglistify: " + req.list.name,
+      text: formatText(req.list),
+      html: formatHtml(req.list)
+    }));
+  });
+
   app.post("/list/:listId/email", function(req, res, next) {
     var to = req.body.to;
     email.sendMail({
@@ -139,6 +148,28 @@ function setupRoutes(app, log, redis, email) {
   return app;
 }
 
+function emailPage(params) {
+  return `
+<html>
+<head>
+<title>Email Preview</title>
+</head>
+<body>
+<h1>Email Preview</h1>
+<h3>TO: ${h(params.to)}</h3>
+<h3>${h(params.subject)}</h4>
+<hr />
+<h4>Plain Text</h4>
+<pre>${h(params.text)}</pre>
+<hr />
+<h4>Html</h4>
+<div>${(params.html)}</div>
+<hr />
+</body>
+</html>
+  `;
+}
+
 function formatText(list) {
   return (
     "Shoppinglistify: " + list.name + "\n\n" +
@@ -153,7 +184,9 @@ function formatHtml(list) {
     "<h1>Shoppinglistify: " + h(list.name) + "</h1>" +
     "<ul>" +
     map(list.items, function(item) {
-      return "<li>" + (item.completed ? "☑︎ " : "☐ ") + h(item.name) + "</li>";
+      var row = h(item.name);
+      if (item.completed) row = "<s>" + row + "</s>";
+      return "<li>" + row + "</li>";
     }).join("\n") +
     "</ul>"
   );
