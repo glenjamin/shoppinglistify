@@ -9,8 +9,35 @@
     }
   },
   "addons": [
-    "heroku-redis:hobby-dev"
+    "heroku-redis:hobby-dev",
+    "sendgrid:starter"
   ],
+  "env": {
+    "SMTP_HOST": {
+      "description": "The SMTP host",
+      "value": "smtp.sendgrid.net"
+    },
+    "SMTP_PORT": {
+      "description": "The SMTP port",
+      "value": "587"
+    },
+    "SMTP_SECURE": {
+      "description": "Whether to initiate a secure SMTP connection",
+      "value": "false"
+    },
+    "SMTP_USER_VAR": {
+      "description": "The variable to use for SMTP_USER",
+      "value": "SENDGRID_USERNAME"
+    },
+    "SMTP_PASS_VAR": {
+      "description": "The variable to use for SMTP_PASS",
+      "value": "SENDGRID_PASSWORD"
+    },
+    "WEB_CONCURRENCY": {
+      "description": "The number of processes to run.",
+      "value": "5"
+    }
+  },
   "buildpacks": [
     {"url": "https://github.com/heroku/heroku-buildpack-addon-wait.git"},
     {"url": "heroku/nodejs"}
