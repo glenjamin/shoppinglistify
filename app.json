@@ -32,10 +32,6 @@
     "SMTP_PASS_VAR": {
       "description": "The variable to use for SMTP_PASS",
       "value": "SENDGRID_PASSWORD"
-    },
-    "WEB_CONCURRENCY": {
-      "description": "The number of processes to run.",
-      "value": "5"
     }
   },
   "buildpacks": [
