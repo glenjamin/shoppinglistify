@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js | bunyan",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "stale": "node stale.js"
   },
   "engines": {
     "node": "6.2.0"
@@ -30,7 +31,9 @@
     "http-shutdown": "^1.0.3",
     "nodemailer": "^2.4.2",
     "redis": "^2.6.0-2",
-    "uuid": "^2.0.2"
+    "redis-scanner": "^0.1.1",
+    "uuid": "^2.0.2",
+    "yargs": "^4.7.1"
   },
   "devDependencies": {
     "@glenjamin/eslint-config": "^2.1.2",
