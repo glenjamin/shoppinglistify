@@ -2,18 +2,36 @@ var path = require("path");
 var uuid = require("uuid");
 var bunyanMiddleware = require("bunyan-middleware");
 var express = require("express");
+var sslify = require("express-sslify");
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var h = require("escape-html");
 
-module.exports = function(log, redis, email) {
+module.exports = function(log, httpsOnly, redis, email) {
   var app = express();
+
+  setupMiddleware(app, log, httpsOnly);
+
+  setupRoutes(app, redis, email);
+
+  return app;
+};
+
+function setupMiddleware(app, log, httpsOnly) {
+  if (httpsOnly) {
+    log.info("Allowing secure connections only");
+    app.set("trust proxy", true);
+    app.use(sslify.HTTPS());
+  }
 
   app.use(bunyanMiddleware({logger: log, requestStart: true}));
   app.use(bodyParser.json());
 
   app.use(cors());
   app.options('*', cors());
+}
+
+function setupRoutes(app, redis, email) {
 
   app.use(function(req, res, next) {
     res.on("finish", function() {
@@ -114,7 +132,7 @@ module.exports = function(log, redis, email) {
   });
 
   return app;
-};
+}
 
 function formatText(list) {
   return (

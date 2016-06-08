@@ -10,6 +10,7 @@ var createApp = require("./app");
 var config = {
   port: getenv("PORT"),
   redis: getenv("REDIS_URL"),
+  https: getenv("HTTPS_ONLY", false),
   smtp: {
     host: getenv("SMTP_HOST"),
     port: Number(getenv("SMTP_PORT")),
@@ -41,7 +42,7 @@ emailClient.verify(function(err, success) {
   log.info("Connected to SMTP", {success});
 });
 
-var app = createApp(log, redisClient, emailClient);
+var app = createApp(log, config.https, redisClient, emailClient);
 
 // Create embedded HTTP server
 var server = http.createServer(app).withShutdown();

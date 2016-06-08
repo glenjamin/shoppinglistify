@@ -3,13 +3,16 @@ var fmt = require("util").format;
 var bunyan = require("bunyan");
 
 /* eslint-disable no-process-env */
-exports.getenv = function getenv(name) {
+exports.getenv = function getenv(name, fallback) {
   if (name in process.env) {
     return process.env[name];
   }
   var namevar = name + "_VAR";
   if (namevar in process.env) {
     return getenv(process.env[namevar]);
+  }
+  if (fallback !== undefined) {
+    return fallback;
   }
   throw new Error(`Missing ${name} environment variable`);
 };

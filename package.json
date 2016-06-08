@@ -28,6 +28,7 @@
     "cors": "^2.7.1",
     "escape-html": "^1.0.3",
     "express": "^4.13.4",
+    "express-sslify": "^1.0.1",
     "http-shutdown": "^1.0.3",
     "nodemailer": "^2.4.2",
     "redis": "^2.6.0-2",
