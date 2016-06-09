@@ -62,7 +62,13 @@
         url: url,
         params: {listId},
         body: {to: email}
-      })
+      }),
+      $("div", {},
+        $("h3", {}, "Email preview"),
+        $("a", {href: url + "/list/" + listId + "/email"},
+          "GET " + url + "/list/" + listId + "/email")
+      ),
+      $("footer", {style: {minHeight: 50}})
     );
   }
 
