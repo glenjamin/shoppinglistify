@@ -12,7 +12,7 @@ module.exports = function(log, httpsOnly, redis, email) {
 
   setupMiddleware(app, log, httpsOnly);
 
-  setupRoutes(app, redis, email);
+  setupRoutes(app, log, redis, email);
 
   return app;
 };
@@ -31,7 +31,7 @@ function setupMiddleware(app, log, httpsOnly) {
   app.options('*', cors());
 }
 
-function setupRoutes(app, redis, email) {
+function setupRoutes(app, log, redis, email) {
 
   app.use(function(req, res, next) {
     res.on("finish", function() {
@@ -61,10 +61,10 @@ function setupRoutes(app, redis, email) {
       }
       try {
         req.list = JSON.parse(reply);
+        return next();
       } catch (ex) {
         return next(ex);
       }
-      return next();
     });
   });
 
@@ -123,10 +123,15 @@ function setupRoutes(app, redis, email) {
     });
   });
 
+  app.get("/crash", function() {
+    throw new Error("NOOOOOOOOOOOOOOOOOO!!!!!!!");
+  });
+
   app.use(function(req, res) {
     res.status(404).json({ error: "not-found" });
   });
   app.use(function(err, req, res, next) {
+    log.warn(err, "Unexpected error");
     res.status(500).json({ error: err.message, stack: err.stack.split("\n") });
     req = res = next;
   });

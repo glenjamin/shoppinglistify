@@ -26,7 +26,9 @@
         path: "/list",
         url: url,
         body: {name: "Shopping"},
-        onResponse(resp) { update({listId: resp.id}); }
+        onResponse(resp) {
+          if (resp.id) update({listId: resp.id});
+        }
       }),
       $(Example, {
         title: "Get list details",
@@ -42,7 +44,9 @@
         url: url,
         params: {listId},
         body: {name: "Milk"},
-        onResponse(resp) { update({itemId: Object.keys(resp.items).pop() }); }
+        onResponse(resp) {
+          if (resp.items) update({itemId: Object.keys(resp.items).pop() });
+        }
       }),
       $(Example, {
         title: "Toggle list item",
