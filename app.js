@@ -153,18 +153,23 @@ function emailPage(params) {
 <html>
 <head>
 <title>Email Preview</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
+<div class="container">
 <h1>Email Preview</h1>
-<h3>TO: ${h(params.to)}</h3>
-<h3>${h(params.subject)}</h4>
+<h4>To <small>${h(params.to)}</small></h4>
+<h4>Subject <small>${h(params.subject)}</small></h4>
 <hr />
-<h4>Plain Text</h4>
+<h2>Plain Text</h2>
+<hr />
 <pre>${h(params.text)}</pre>
 <hr />
-<h4>Html</h4>
+<h2>Html</h2>
+<hr />
 <div>${(params.html)}</div>
 <hr />
+</div>
 </body>
 </html>
   `;
