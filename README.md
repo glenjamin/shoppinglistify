@@ -7,6 +7,8 @@ npm install -g foreman
 npm install
 ```
 
+Create `.env` file as needed
+
 ## Running
 
 ```sh

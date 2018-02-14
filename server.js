@@ -11,7 +11,7 @@ var config = {
   port: getenv("PORT"),
   redis: getenv("REDIS_URL"),
   https: getenv("HTTPS_ONLY", false),
-  smtp: {
+  smtp: getenv("SMTP_ENABLED") == "true" ? {
     host: getenv("SMTP_HOST"),
     port: Number(getenv("SMTP_PORT")),
     secure: Boolean(getenv("SMTP_SECURE") == "true"),
@@ -19,7 +19,7 @@ var config = {
       user: getenv("SMTP_USER"),
       pass: getenv("SMTP_PASS"),
     } : null
-  }
+  } : false
 };
 
 var log = initLogging();
@@ -32,15 +32,24 @@ redisClient.on("ready", function() {
 });
 
 // Create SMTP connection
-var emailClient = nodemailer.createTransport(
-  Object.assign({logger: log}, config.smtp),
-  {from: '"Shoppinglistify" <shoppinglistify@stainlessed.co.uk>'}
-);
-log.info({smtp: config.smtp}, "Connecting to SMTP");
-emailClient.verify(function(err, success) {
-  if (err) throw err;
-  log.info("Connected to SMTP", {success});
-});
+var emailClient;
+if (config.smtp) {
+  emailClient = nodemailer.createTransport(
+    Object.assign({logger: log}, config.smtp),
+    {from: '"Shoppinglistify" <shoppinglistify@stainlessed.co.uk>'}
+  );
+  log.info({smtp: config.smtp}, "Connecting to SMTP");
+  emailClient.verify(function(err, success) {
+    if (err) throw err;
+    log.info("Connected to SMTP", {success});
+  });
+} else {
+  log.warn("Using fake SMTP");
+  emailClient = { sendMail: function(info, callback) {
+    log.info({email: info}, "In fake mode, not sending email");
+    return callback(null, {info: "OK"});
+  }};
+}
 
 var app = createApp(log, config.https, redisClient, emailClient);
 
