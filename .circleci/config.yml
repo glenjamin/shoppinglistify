@@ -8,25 +8,25 @@ jobs:
       - run:
           name: "Tests"
           command: |
-            sleep 1
+            sleep 5
             echo "Test 1: pass"
-            sleep 1
+            sleep 5
             echo "Test 2: pass"
-            sleep 1
+            sleep 5
             echo "Test 3: pass"
-            sleep 1
+            sleep 5
             echo "Test 4: pass"
-            sleep 1
+            sleep 5
             echo "Test 5: pass"
-            sleep 1
+            sleep 5
             echo "Test 6: pass"
-            sleep 1
+            sleep 5
             echo "Test 7: pass"
-            sleep 1
+            sleep 5
             echo "Test 8: pass"
-            sleep 1
+            sleep 5
             echo "Test 9: pass"
-            sleep 1
+            sleep 5
             echo "Test 10: pass"
-            sleep 1
+            sleep 5
             echo "All tests passed"
