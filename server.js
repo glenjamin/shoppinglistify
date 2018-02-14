@@ -10,8 +10,8 @@ var createApp = require("./app");
 var config = {
   port: getenv("PORT"),
   redis: getenv("REDIS_URL"),
-  https: getenv("HTTPS_ONLY", false),
-  smtp: getenv("SMTP_ENABLED") == "true" ? {
+  https: Boolean(getenv("HTTPS_ONLY", false)),
+  smtp: getenv("SMTP_ENABLED", true) != "false" ? {
     host: getenv("SMTP_HOST"),
     port: Number(getenv("SMTP_PORT")),
     secure: Boolean(getenv("SMTP_SECURE") == "true"),
