@@ -157,9 +157,9 @@ function emailPage(params) {
 </head>
 <body>
 <div class="container">
-<h1>Email Preview</h1>
-<h4>To <small>${h(params.to)}</small></h4>
-<h4>Subject <small>${h(params.subject)}</small></h4>
+<h1>Applause please!</h1>
+<h3>To <small>${h(params.to)}</small></h3>
+<h3>Subject <small>${h(params.subject)}</small></h3>
 <hr />
 <h2>Plain Text</h2>
 <hr />
